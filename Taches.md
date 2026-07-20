@@ -1,92 +1,145 @@
-## 0. Analyse des besoins
+## 0. Analyse des besoins (v1)
 
-- [x] Lecture et comprehension du sujet
-- [x] Identification des acteurs du systeme (Administrateur et Client)
-- [x] Analyse des fonctionnalites attendues
-- [x] Definition des regles de gestion
-- [x] Determination des operations disponibles
+- [x] Lecture et compréhension du sujet
+- [x] Identification des acteurs du système (Administrateur et Client)
+- [x] Analyse des fonctionnalités attendues
+- [x] Définition des règles de gestion
+- [x] Détermination des opérations disponibles
 
-## 1. Conception
+## 1. Conception (v1)
 
-### Base de donnees
+### Base de données
 
-- [x] Identification des entites
-- [x] Definition des attributs
-- [x] Determination des relations entre les entites
-- [x] Definition des cles primaires et etrangeres
-- [x] Conception du schema relationnel
-- [x] Verification de la normalisation
-- [x] Redaction du fichier base.sql
+- [x] Identification des entités
+- [x] Définition des attributs
+- [x] Détermination des relations entre les entités
+- [x] Définition des clés primaires et étrangères
+- [x] Conception du schéma relationnel
+- [x] Vérification de la normalisation
+- [x] Rédaction du fichier `base.sql`
 
-### Regles metier
+### Règles métier
 
-- [x] Definition des prefixes autorises (033, 037)
-- [x] Definition des types d'operations (depot, retrait, transfert)
-- [x] Definition des baremes de frais (tranches modifiables par l'admin)
-- [x] Determination des regles de calcul des frais (frais selon tranche du montant, par type d'operation)
-- [x] Determination des regles de calcul du solde (credit/debit + frais preleves sur l'expediteur)
-- [x] Definition des validations metiers (montant positif, solde suffisant, prefixe valide, destinataire existant)
+- [x] Définition des préfixes autorisés (033, 037)
+- [x] Définition des types d'opérations (dépot, retrait, transfert)
+- [x] Définition des barèmes de frais (tranches modifiables par l'admin)
+- [x] Détermination des règles de calcul des frais
+- [x] Détermination des règles de calcul du solde
+- [x] Validation des règles métier (montant positif, solde suffisant, préfixe valide)
 
-## 2. Initialisation du projet
+## 2. Initialisation du projet (v1)
 
-- [x] Creation du projet CodeIgniter 4
-- [x] Configuration de l'environnement (.env, CI_ENVIRONMENT)
-- [x] Configuration de SQLite (database.default.DBDriver = SQLite3)
-- [x] Configuration de la connexion à la base
-- [x] Organisation des dossiers MVC (Controllers/Client, Controllers/Admin, Models, Views, Filters, Libraries)
-- [x] Configuration des routes (app/Config/Routes.php)
+- [x] Création du projet CodeIgniter 4
+- [x] Configuration de l'environnement
+- [x] Configuration de SQLite
+- [x] Organisation des dossiers MVC
+- [x] Configuration des routes
 
----
+## 3. Base de données (v1)
 
-## 3. Base de donnees
+- [x] Création des tables principales
+- [x] Mise en place des contraintes et clefs étrangères
+- [x] Création des index nécessaires
+- [x] Création des vues pour reporting
+- [x] Insertion des données initiales
 
-Creation des tables :
+## 4. Développement (v1)
 
-- [x] users (comptes administrateurs)
-- [x] clients (identite par numero de telephone)
-- [x] prefixes
-- [x] operation_types
-- [x] baremes
-- [x] comptes (lie a clients)
-- [x] operations (historique, liee a comptes et operation_types)
+### Côté Admin
 
-Creation :
+- [x] Authentification admin
+- [x] Gestion des utilisateurs
+- [x] Gestion des préfixes et commissions
+- [x] Gestion des types d'opérations
+- [x] Gestion des barèmes de frais
+- [x] Dashboard et reporting de base
 
-- [x] des contraintes (UNIQUE sur login, telephone, prefixe, code)
-- [x] des cles etrangeres (comptes.client_id, operations.compte_id/compte_dest_id/operation_type_id, baremes.operation_type_id)
-- [x] des index necessaires (idx_users_login, idx_clients_telephone, idx_baremes_type, idx_operations_compte, idx_operations_type)
-- [x] des vues (v_gains_par_type, v_comptes_clients)
-- [x] des donnees initiales (prefixes 033/037, types d'operation, bareme de frais retrait/transfert)
+### Côté Client
 
----
-
-## 4. Developpement
-
-### Cote Admin
-
-- [x] Authentification reelle sur la table `users` (mot de passe hache avec password_hash/password_verify)
-- [x] Seeder du compte admin par defaut (app/Database/Seeds/UserSeeder.php)
-- [x] Gestion des comptes administrateurs (creation, activation/desactivation, suppression)
-- [x] Configuration des prefixes (ajout, activation/desactivation, suppression)
-- [x] Gestion des types d'operation (ajout, activation/desactivation)
-- [x] Gestion du bareme de frais par tranche, par type d'operation (ajout, suppression)
-- [x] Tableau de bord avec statistiques (nb comptes, solde total, nb operations, total des frais)
-- [x] Situation des gains via les frais (vue v_gains_par_type)
-- [x] Situation des comptes clients (vue v_comptes_clients)
-
-### Cote Client
-
-- [x] Login automatique par numero de telephone (creation auto du client + du compte si premiere connexion)
-- [x] Verification du prefixe autorise a la connexion
+- [x] Login automatique par téléphone
 - [x] Consultation du solde
-- [x] Depot (credite le compte, gratuit par defaut)
-- [x] Retrait (frais selon bareme, verification du solde suffisant)
-- [x] Transfert vers un autre numero (frais selon bareme, prelevement chez l'expediteur uniquement)
-- [x] Historique des operations (avec destinataire pour les transferts)
+- [x] Dépôt
+- [x] Retrait
+- [x] Transfert interne
+- [x] Historique des opérations
 
-## 5. Interface / Design
+## 5. Interface / Design (v1)
 
-- [x] Integration de Bootstrap 5
-- [x] Feuille de style personnalisee (public/css/style.css) : palette dediee, cartes de solde en degrade, tuiles de menu, tableaux de bord admin avec statistiques colorees, pages de connexion habillees
-- [x] Navigation distincte cote client (vert mobile money) et cote admin (sombre, accent bleu)
-- [x] Messages de succes/erreur (flashdata) integres visuellement
+- [x] Intégration Bootstrap
+- [x] Styles personnalisés
+- [x] Navigation distincte admin/client
+- [x] Messages de succès / erreur
+
+---
+
+## 0. Analyse des besoins (v2)
+
+- [x] Revue du v1 et des corrections demandées
+- [x] Définition de la gestion des autres opérateurs
+- [x] Définition du modèle de commission externe
+- [x] Définition des exigences de reporting détaillé
+
+## 1. Conception (v2)
+
+### Base de données
+
+- [x] Extension du schéma `prefixes` avec `commission_percent`
+- [x] Ajout de `telephone_dest` dans `operations`
+- [ ] Ajout de `commission` dans `operations` si migration nécessaire
+- [x] Mise à jour de `base.sql` pour la version v2
+
+### Règles métier
+
+- [x] Transferts vers autres opérateurs sans création de compte local
+- [x] Frais = `baseFrais` + `commission` pour opérateurs externes
+- [x] Commission prélevée sur l’émetteur seulement
+- [x] Option d’inclure les frais sur le destinataire interne
+- [x] Règles de validation pour envoi multi-destinataires
+
+## 2. Initialisation du projet (v2)
+
+- [x] Ajustement des routes si besoin
+- [x] Ajout de la logique de service de transfert
+- [x] Mise à jour des modèles et contrôleurs concernés
+- [x] Mise à jour des vues admin et client
+
+## 3. Base de données (v2)
+
+- [x] Mise à jour du fichier `base.sql`
+- [ ] Application des migrations / mise à jour de la base existante
+- [x] Vérification des vues et des rapports
+- [x] Validation des index et performances de requêtes
+
+## 4. Développement (v2)
+
+### Côté Admin
+
+- [x] Edition des commissions `commission_percent` par préfixe
+- [x] Page d’édition en masse des commissions
+- [x] Barème modifiable avec ajout/suppression/édition
+- [x] Reporting des gains détaillé par opérateur
+- [x] Rapport transactionnel avec expéditeur/destinataire
+
+### Côté Client
+
+- [x] Transfert vers préfixes externes sans compte local
+- [x] Option `Inclure les frais` pour destinataire interne
+- [x] Envoi multi-destinataires avec répartition des arrondis
+- [x] Historique avec numéro de destinataire conservé
+- [x] Validation stricte des préfixes et des montants
+
+## 5. Interface / Design (v2)
+
+- [x] Clarification des formulaires de transfert
+- [x] Ajout d’un tableau de gains détaillé
+- [x] Affichage des commissions externes en admin
+- [x] Conservation des styles et navigation v1
+
+## Correction v2
+
+- [x] Séparation claire entre frais perçus et commission externe
+- [x] Transferts autres opérateurs sans création de compte local
+- [x] Commission déduite de l’envoyeur, pas du destinataire interne
+- [x] Historique et reporting détaillés
+- [x] Tâches v2 structurées comme le v1
+

@@ -157,10 +157,12 @@ class OperationService
 
         $creditToDest = $montant;
         $totalDebiter = $montant + $transferFee;
+        $fraisOperateur = $transferFee;
 
         if ($inclureFraisDest) {
             $creditToDest += $withdrawalFee;
             $totalDebiter += $withdrawalFee;
+            $fraisOperateur += $withdrawalFee;
         }
 
         if ($sender['solde'] < $totalDebiter) {
@@ -180,7 +182,7 @@ class OperationService
             'telephone_dest' => $telephoneDest,
             'operation_type_id' => $type['id'],
             'montant' => $creditToDest,
-            'frais' => $transferFee,
+            'frais' => $fraisOperateur,
             'commission' => 0,
             'solde_apres' => $compteAfter['solde'],
         ]);

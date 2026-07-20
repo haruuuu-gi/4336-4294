@@ -1,4 +1,4 @@
-<?= $this->extend('layout/operator') ?>
+<?= $this->extend('layout/admin') ?>
 <?= $this->section('content') ?>
 
 <h5 class="mb-3">Configuration des préfixes</h5>

@@ -16,7 +16,7 @@ class OperationTypeController extends BaseController
 
     public function index()
     {
-        return view('admin/operation_types/index', ['types' => $this->model->findAll()]);
+        return view('admin/operation-types/index', ['types' => $this->model->findAll()]);
     }
 
     public function create()

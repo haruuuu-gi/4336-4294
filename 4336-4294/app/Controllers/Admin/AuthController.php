@@ -14,13 +14,13 @@ class AuthController extends BaseController
 
     public function processLogin()
     {
-        $login = trim($this->request->getPost('login'));
-        $password = (string) $this->request->getPost('password');
+        $login = $this->request->getPost('login');
+        $password = $this->request->getPost('password');
 
         $userModel = new UserModel();
-        $user = $userModel->verifierMotDePasse($login, $password);
+        $user = $userModel->findByLogin($login);
 
-        if (! $user) {
+        if (! $user || $user['password'] !== $password) {
             return redirect()->to('/admin/login')->with('error', 'Identifiants incorrects.');
         }
 

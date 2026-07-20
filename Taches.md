@@ -44,11 +44,11 @@
 
 Creation des tables :
 
-- utilisateurs
+- users
 - clients
 - prefixes
-- types_operations
-- baremes_frais
+- operation_types
+- baremes
 - comptes
 - operations
 

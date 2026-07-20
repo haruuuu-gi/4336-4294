@@ -9,6 +9,9 @@ $routes->get('/', static function () {
     return redirect()->to('/client/login');
 });
 
+// $routes->get('/', static function () {
+//     return redirect()->to('/admin/login');
+// });
 
 $routes->get('client/login', 'Client\AuthController::login');
 $routes->post('client/login', 'Client\AuthController::processLogin');

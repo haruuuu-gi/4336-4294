@@ -11,13 +11,18 @@
                     <?= csrf_field() ?>
                     <div class="mb-3">
                         <label class="form-label">Numéro du destinataire</label>
-                        <input type="text" name="telephone_dest" class="form-control form-control-lg" placeholder="0371234567" required>
+                        <textarea name="telephone_dest" class="form-control form-control-lg" placeholder="0371234567 ou plusieurs numéros séparés par virgule ou nouvelle ligne" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Montant à transférer (Ar)</label>
                         <input type="number" min="1" step="1" name="montant" class="form-control form-control-lg" required>
                         <div class="form-text">Des frais seront prélevés selon le barème en vigueur.</div>
                     </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="inclure_frais" id="inclure_frais" class="form-check-input">
+                        <label for="inclure_frais" class="form-check-label">Inclure les frais de retrait envoyés au destinataire</label>
+                    </div>
+                    <div class="mb-2 text-muted small">Astuce: pour envoyer à plusieurs destinataires, mettez les numéros séparés par une virgule ou une nouvelle ligne. Tous les destinataires doivent appartenir au même opérateur.</div>
                     <button type="submit" class="btn btn-primary w-100">Valider le transfert</button>
                 </form>
             </div>

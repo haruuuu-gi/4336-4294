@@ -5,13 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', static function () {
-    return redirect()->to('/client/login');
-});
-
-// $routes->get('/', static function () {
-//     return redirect()->to('/admin/login');
-// });
+$routes->get('/', 'Home::index');
 
 $routes->get('client/login', 'Client\AuthController::login');
 $routes->post('client/login', 'Client\AuthController::processLogin');
@@ -47,8 +41,11 @@ $routes->group('admin', ['filter' => 'adminAuth'], static function ($routes) {
 
     $routes->get('prefixes', 'Admin\PrefixController::index');
     $routes->post('prefixes', 'Admin\PrefixController::create');
+    $routes->get('prefixes/bulk', 'Admin\PrefixController::bulk');
+    $routes->post('prefixes/bulk', 'Admin\PrefixController::bulk');
     $routes->get('prefixes/(:num)/toggle', 'Admin\PrefixController::toggle/$1');
     $routes->get('prefixes/(:num)/delete', 'Admin\PrefixController::delete/$1');
+    $routes->post('prefixes/(:num)/update', 'Admin\PrefixController::update/$1');
 
     $routes->get('types-operation', 'Admin\OperationTypeController::index');
     $routes->post('types-operation', 'Admin\OperationTypeController::create');
@@ -56,6 +53,8 @@ $routes->group('admin', ['filter' => 'adminAuth'], static function ($routes) {
 
     $routes->get('types-operation/(:num)/baremes', 'Admin\BaremeController::index/$1');
     $routes->post('types-operation/(:num)/baremes', 'Admin\BaremeController::create/$1');
+    $routes->get('baremes/(:num)/edit', 'Admin\BaremeController::edit/$1');
+    $routes->post('baremes/(:num)/update', 'Admin\BaremeController::update/$1');
     $routes->get('baremes/(:num)/delete', 'Admin\BaremeController::delete/$1');
 
     $routes->get('gains', 'Admin\GainController::index');

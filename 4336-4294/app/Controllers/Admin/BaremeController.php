@@ -34,7 +34,7 @@ class BaremeController extends BaseController
         $montantMax = (float) $this->request->getPost('montant_max');
         $frais = (float) $this->request->getPost('frais');
 
-        if ($montantMax  = $montantMin) {
+        if ($montantMax <= $montantMin) {
             return redirect()->to('/admin/types-operation/' . $operationTypeId . '/baremes')
                 ->with('error', 'Le montant max doit être supérieur au montant min.');
         }
@@ -48,6 +48,47 @@ class BaremeController extends BaseController
 
         return redirect()->to('/admin/types-operation/' . $operationTypeId . '/baremes')
             ->with('success', 'Tranche ajoutée.');
+    }
+
+    public function edit($id)
+    {
+        $bareme = $this->model->find($id);
+        if (! $bareme) {
+            return redirect()->to('/admin/types-operation')->with('error', 'Tranche introuvable.');
+        }
+
+        $type = $this->typeModel->find($bareme['operation_type_id']);
+
+        return view('admin/baremes/edit', [
+            'type' => $type,
+            'bareme' => $bareme,
+        ]);
+    }
+
+    public function update($id)
+    {
+        $bareme = $this->model->find($id);
+        if (! $bareme) {
+            return redirect()->to('/admin/types-operation')->with('error', 'Tranche introuvable.');
+        }
+
+        $montantMin = (float) $this->request->getPost('montant_min');
+        $montantMax = (float) $this->request->getPost('montant_max');
+        $frais = (float) $this->request->getPost('frais');
+
+        if ($montantMax <= $montantMin) {
+            return redirect()->to('/admin/baremes/' . $id . '/edit')
+                ->with('error', 'Le montant max doit être supérieur au montant min.');
+        }
+
+        $this->model->update($id, [
+            'montant_min' => $montantMin,
+            'montant_max' => $montantMax,
+            'frais' => $frais,
+        ]);
+
+        return redirect()->to('/admin/types-operation/' . $bareme['operation_type_id'] . '/baremes')
+            ->with('success', 'Tranche mise à jour.');
     }
 
     public function delete($id)

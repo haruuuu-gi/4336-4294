@@ -30,13 +30,7 @@
     </div>
     <div class="col-md-8">
         <table class="table table-admin table-striped bg-white shadow-sm">
-            <thead>
-                <tr>
-                    <th>Montant compris entre</th>
-                    <th>Frais</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Montant compris entre</th><th>Frais</th><th>Actions</th></tr></thead>
             <tbody>
             <?php if (empty($baremes)): ?>
                 <tr><td colspan="3" class="text-center text-muted">Aucune tranche définie (opération gratuite).</td></tr>
@@ -46,12 +40,8 @@
                     <td><?= number_format($b['montant_min'], 0, ',', ' ') ?> et <?= number_format($b['montant_max'], 0, ',', ' ') ?> Ar</td>
                     <td><?= number_format($b['frais'], 0, ',', ' ') ?> Ar</td>
                     <td>
-                        <span>
-                            <a href="<?= site_url('admin/baremes/' . $b['id'] . '/delete') ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cette tranche ?')">Suppimer</a>
-                        </span>
-                        <span>
-                            <a href="<?= site_url('admin/baremes/' . $b['id'] . '/modify') ?>" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                        </span>
+                        <a href="<?= site_url('admin/baremes/' . $b['id'] . '/edit') ?>" class="btn btn-sm btn-outline-primary me-2">Modifier</a>
+                    <a href="<?= site_url('admin/baremes/' . $b['id'] . '/delete') ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cette tranche ?')">Supprimer</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

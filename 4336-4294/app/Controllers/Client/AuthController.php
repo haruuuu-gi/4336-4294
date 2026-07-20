@@ -21,9 +21,10 @@ class AuthController extends BaseController
             return redirect()->to('/client/login')->with('error', 'Numéro de téléphone invalide.');
         }
 
-        $prefixModel = new PrefixModel();
-        if (! $prefixModel->telephoneValide($telephone)) {
-            return redirect()->to('/client/login')->with('error', 'Ce préfixe n\'est pas pris en charge par l\'opérateur.');
+        // v1: site utilisé par un seul opérateur Airtel (préfixe 033)
+        $ownPrefix = '033';
+        if (substr($telephone, 0, 3) !== $ownPrefix) {
+            return redirect()->to('/client/login')->with('error', 'Ce site est réservé aux numéros Airtel (033)');
         }
 
         $compteModel = new CompteModel();
@@ -40,6 +41,6 @@ class AuthController extends BaseController
     public function logout()
     {
         session()->destroy();
-        return redirect()->to('/client/login');
+        return redirect()->to('/');
     }
 }

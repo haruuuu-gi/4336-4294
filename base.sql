@@ -23,10 +23,11 @@ CREATE INDEX idx_clients_telephone ON clients(telephone);
 
 DROP TABLE IF EXISTS prefixes;
 CREATE TABLE prefixes (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    prefixe     VARCHAR(3) NOT NULL UNIQUE,
-    actif       INTEGER NOT NULL DEFAULT 1,
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    prefixe             VARCHAR(3) NOT NULL UNIQUE,
+    actif               INTEGER NOT NULL DEFAULT 1,
+    commission_percent  DECIMAL(5,2) NOT NULL DEFAULT 1.00,
+    created_at          DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS operation_types;
@@ -62,9 +63,11 @@ CREATE TABLE operations (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
     compte_id           INTEGER NOT NULL,
     compte_dest_id      INTEGER NULL,
+    telephone_dest      VARCHAR(15) NULL,
     operation_type_id   INTEGER NOT NULL,
     montant             DECIMAL(15,2) NOT NULL,
     frais               DECIMAL(15,2) NOT NULL DEFAULT 0,
+    commission          DECIMAL(15,2) NOT NULL DEFAULT 0,
     solde_apres         DECIMAL(15,2) NOT NULL,
     created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (compte_id) REFERENCES comptes(id),
@@ -97,7 +100,7 @@ FROM comptes cp
 JOIN clients cl ON cl.id = cp.client_id;
 
 
-INSERT INTO prefixes (prefixe, actif) VALUES ('033', 1), ('037', 1), ('034', 1), ('032', 1), ('038', 1);
+INSERT INTO prefixes (prefixe, actif, commission_percent) VALUES ('033', 1, 1.00), ('037', 1, 1.00), ('034', 1, 1.00), ('032', 1, 1.00), ('038', 1, 1.00);
 
 INSERT INTO users (nom, login, password, role, actif) VALUES
     ('Administrateur', 'admin', 'admin123', 'admin', 1);
@@ -130,5 +133,5 @@ INSERT INTO baremes (operation_type_id, montant_min, montant_max, frais) VALUES
     (3, 500001,   1000000, 2500),
     (3, 1000001,  2000000, 3000);
 
-INSERT INTO clients (telephone) VALUES ('0331234567'), ('0377654321');
+INSERT INTO clients (telephone) VALUES ('0331234567'), ('0337654321');
 INSERT INTO comptes (client_id, solde) VALUES (1, 50000), (2, 10000);

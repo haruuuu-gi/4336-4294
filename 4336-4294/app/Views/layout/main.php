@@ -25,6 +25,9 @@
                 <a class="nav-link text-white" href="<?= site_url('client/logout') ?>">Déconnexion (<?= esc(session()->get('telephone')) ?>)</a>
             </div>
         </div>
+        <div class="navbar-admin ms-auto">
+            <a href="../admin/login" class="btn btn-outline-light">Admin</a>
+        </div>
     </div>
 </nav>
 <?php endif; ?>

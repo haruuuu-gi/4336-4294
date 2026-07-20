@@ -36,6 +36,6 @@ class AuthController extends BaseController
     public function logout()
     {
         session()->remove(['admin_id', 'admin_nom', 'admin_login']);
-        return redirect()->to('/admin/login');
+        return redirect()->to('/');
     }
 }

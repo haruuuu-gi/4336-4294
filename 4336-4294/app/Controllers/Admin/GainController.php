@@ -10,13 +10,20 @@ class GainController extends BaseController
     public function index()
     {
         $operationModel = new OperationModel();
-        $gains = $operationModel->situationGains();
+        $ownPrefix = '033';
+        $gains = $operationModel->situationGainsSplit($ownPrefix);
 
         $totalGeneral = array_sum(array_column($gains, 'total_frais'));
+
+        $montantsParOperateur = $operationModel->montantParOperateur();
+        $transfertsDetails = $operationModel->detailsTransferts();
 
         return view('admin/gains/index', [
             'gains' => $gains,
             'totalGeneral' => $totalGeneral,
+            'ownPrefix' => $ownPrefix,
+            'montantsParOperateur' => $montantsParOperateur,
+            'transfertsDetails' => $transfertsDetails,
         ]);
     }
 }

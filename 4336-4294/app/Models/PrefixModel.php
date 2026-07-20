@@ -10,7 +10,8 @@ class PrefixModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $useTimestamps = false;
-    protected $allowedFields = ['prefixe', 'actif'];
+    // Allowed fields include commission percent
+    protected $allowedFields = ['prefixe', 'actif', 'commission_percent'];
 
     /**
      * Vérifie si un numéro de téléphone correspond à un préfixe actif.
@@ -27,5 +28,15 @@ class PrefixModel extends Model
     public function actifs(): array
     {
         return $this->where('actif', 1)->findAll();
+    }
+
+    public function commissionPourPrefixe(string $prefixe): float
+    {
+        $row = $this->where('prefixe', $prefixe)->first();
+        if (! $row) {
+            return 1.0;
+        }
+
+        return isset($row['commission_percent']) ? (float) $row['commission_percent'] : 1.0;
     }
 }

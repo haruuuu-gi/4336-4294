@@ -19,15 +19,39 @@ class PrefixController extends BaseController
         return view('admin/prefixes/index', ['prefixes' => $this->model->findAll()]);
     }
 
+    public function update($id)
+    {
+        $commission = (float) $this->request->getPost('commission_percent', 1.0);
+
+        $this->model->update($id, ['commission_percent' => $commission]);
+
+        return redirect()->to('/admin/prefixes')->with('success', 'Commission mise à jour.');
+    }
+
+    public function bulk()
+    {
+        if ($this->request->getMethod() === 'post') {
+            $commissions = $this->request->getPost('commission') ?? [];
+            foreach ($commissions as $id => $val) {
+                $this->model->update((int)$id, ['commission_percent' => (float)$val]);
+            }
+
+            return redirect()->to('/admin/prefixes/bulk')->with('success', 'Commissions mises à jour.');
+        }
+
+        return view('admin/prefixes/bulk', ['prefixes' => $this->model->findAll()]);
+    }
+
     public function create()
     {
         $prefixe = trim($this->request->getPost('prefixe'));
+        $commission = (float) $this->request->getPost('commission_percent', 1.0);
 
         if (! preg_match('/^\d{3}$/', $prefixe)) {
             return redirect()->to('/admin/prefixes')->with('error', 'Le préfixe doit contenir exactement 3 chiffres.');
         }
 
-        $this->model->insert(['prefixe' => $prefixe, 'actif' => 1]);
+        $this->model->insert(['prefixe' => $prefixe, 'actif' => 1, 'commission_percent' => $commission]);
 
         return redirect()->to('/admin/prefixes')->with('success', 'Préfixe ajouté.');
     }

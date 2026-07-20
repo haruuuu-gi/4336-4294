@@ -1,0 +1,28 @@
+<?= $this->extend('layout/main') ?>
+<?= $this->section('content') ?>
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <h5 class="section-title">🔁 Faire un transfert</h5>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted">Solde actuel : <strong class="text-mm-primary"><?= number_format($compte['solde'], 0, ',', ' ') ?> Ar</strong></p>
+                <form method="post" action="<?= site_url('client/transfert') ?>">
+                    <?= csrf_field() ?>
+                    <div class="mb-3">
+                        <label class="form-label">Numéro du destinataire</label>
+                        <input type="text" name="telephone_dest" class="form-control form-control-lg" placeholder="0371234567" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Montant à transférer (Ar)</label>
+                        <input type="number" min="1" step="1" name="montant" class="form-control form-control-lg" required>
+                        <div class="form-text">Des frais seront prélevés selon le barème en vigueur.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Valider le transfert</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>

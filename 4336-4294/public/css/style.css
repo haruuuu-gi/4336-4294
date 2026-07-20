@@ -1,0 +1,203 @@
+:root {
+    --mm-primary: #0f6b4f;
+    --mm-primary-dark: #0a4c38;
+    --mm-accent: #ffb703;
+    --mm-danger: #d7263d;
+    --mm-bg: #f4f7f6;
+    --mm-card-radius: 1rem;
+    --mm-admin-dark: #14181f;
+    --mm-admin-accent: #3d8bfd;
+}
+
+body {
+    background: var(--mm-bg);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.navbar-client {
+    background: linear-gradient(135deg, var(--mm-primary) 0%, var(--mm-primary-dark) 100%);
+    box-shadow: 0 2px 10px rgba(15, 107, 79, 0.25);
+}
+.navbar-client .navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.navbar-client .navbar-brand::before {
+    content: "💳";
+    margin-right: 0.4rem;
+}
+.navbar-client .nav-link {
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.15s ease;
+}
+.navbar-client .nav-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.navbar-admin {
+    background: var(--mm-admin-dark);
+    border-bottom: 3px solid var(--mm-admin-accent);
+}
+.navbar-admin .navbar-brand {
+    font-weight: 700;
+}
+.navbar-admin .navbar-brand::before {
+    content: "🛠️";
+    margin-right: 0.4rem;
+}
+.navbar-admin .nav-link {
+    font-weight: 500;
+    opacity: 0.85;
+}
+.navbar-admin .nav-link:hover {
+    opacity: 1;
+    color: var(--mm-admin-accent) !important;
+}
+
+.card {
+    border: none;
+    border-radius: var(--mm-card-radius);
+}
+.card.shadow-sm {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+.card-solde {
+    background: linear-gradient(135deg, var(--mm-primary) 0%, var(--mm-primary-dark) 100%);
+    color: #fff;
+    border-radius: var(--mm-card-radius);
+}
+.card-solde .solde-montant {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.card-solde .solde-label {
+    opacity: 0.85;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tile-stat {
+    border-radius: var(--mm-card-radius);
+    padding: 1.5rem;
+    color: #fff;
+    height: 100%;
+}
+.tile-stat h6 {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+}
+.tile-stat .tile-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+.tile-stat.tile-1 { background: linear-gradient(135deg, #3d8bfd, #1c5fc4); }
+.tile-stat.tile-2 { background: linear-gradient(135deg, #0f6b4f, #0a4c38); }
+.tile-stat.tile-3 { background: linear-gradient(135deg, #ffb703, #fb8500); }
+.tile-stat.tile-4 { background: linear-gradient(135deg, #d7263d, #9c1a2b); }
+
+.menu-tile {
+    display: block;
+    text-decoration: none;
+    border-radius: var(--mm-card-radius);
+    padding: 1.75rem 1rem;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    color: inherit;
+    height: 100%;
+}
+.menu-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+    color: inherit;
+}
+.menu-tile .menu-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.menu-tile h6 {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.menu-tile p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.btn-primary {
+    background-color: var(--mm-primary);
+    border-color: var(--mm-primary);
+}
+.btn-primary:hover {
+    background-color: var(--mm-primary-dark);
+    border-color: var(--mm-primary-dark);
+}
+.btn-outline-primary {
+    color: var(--mm-primary);
+    border-color: var(--mm-primary);
+}
+.btn-outline-primary:hover {
+    background-color: var(--mm-primary);
+    border-color: var(--mm-primary);
+}
+
+.table {
+    border-radius: var(--mm-card-radius);
+    overflow: hidden;
+}
+.table thead {
+    background-color: rgba(15, 107, 79, 0.06);
+}
+.table-admin thead {
+    background-color: rgba(61, 139, 253, 0.10);
+}
+
+.form-control:focus {
+    border-color: var(--mm-primary);
+    box-shadow: 0 0 0 0.2rem rgba(15, 107, 79, 0.15);
+}
+
+.login-wrapper {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+.login-card {
+    border-radius: var(--mm-card-radius);
+    overflow: hidden;
+}
+.login-card .login-banner {
+    background: linear-gradient(135deg, var(--mm-primary) 0%, var(--mm-primary-dark) 100%);
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+}
+.login-card.login-admin .login-banner {
+    background: linear-gradient(135deg, var(--mm-admin-dark), #232833);
+}
+.login-card .login-banner .login-icon {
+    font-size: 2.5rem;
+}
+
+.badge-actif { background-color: var(--mm-primary); }
+.badge-inactif { background-color: #adb5bd; }
+
+.text-mm-primary { color: var(--mm-primary) !important; }
+.section-title {
+    font-weight: 700;
+    border-left: 5px solid var(--mm-primary);
+    padding-left: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+.section-title.admin { border-left-color: var(--mm-admin-accent); }

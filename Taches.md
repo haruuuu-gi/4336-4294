@@ -83,3 +83,10 @@ Creation :
 - [x] Retrait (frais selon bareme, verification du solde suffisant)
 - [x] Transfert vers un autre numero (frais selon bareme, prelevement chez l'expediteur uniquement)
 - [x] Historique des operations (avec destinataire pour les transferts)
+
+## 5. Interface / Design
+
+- [x] Integration de Bootstrap 5
+- [x] Feuille de style personnalisee (public/css/style.css) : palette dediee, cartes de solde en degrade, tuiles de menu, tableaux de bord admin avec statistiques colorees, pages de connexion habillees
+- [x] Navigation distincte cote client (vert mobile money) et cote admin (sombre, accent bleu)
+- [x] Messages de succes/erreur (flashdata) integres visuellement

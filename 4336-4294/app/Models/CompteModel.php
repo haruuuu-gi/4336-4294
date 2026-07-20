@@ -12,12 +12,12 @@ class CompteModel extends Model
     protected $useTimestamps = false;
     protected $allowedFields = ['client_id', 'solde'];
 
-    public function parClientId(int $clientId): ?array
+    public function parClientId(int $clientId)
     {
         return $this->where('client_id', $clientId)->first();
     }
 
-    public function parTelephone(string $telephone): ?array
+    public function parTelephone(string $telephone)
     {
         return $this->select('comptes.*, clients.telephone')
                     ->join('clients', 'clients.id = comptes.client_id')
@@ -25,7 +25,15 @@ class CompteModel extends Model
                     ->first();
     }
 
-    public function trouverOuCreer(string $telephone): array
+    public function findWithTelephone(int $compteId)
+    {
+        return $this->select('comptes.*, clients.telephone')
+                    ->join('clients', 'clients.id = comptes.client_id')
+                    ->where('comptes.id', $compteId)
+                    ->first();
+    }
+
+    public function trouverOuCreer(string $telephone)
     {
         $clientModel = new ClientModel();
         $client = $clientModel->parTelephone($telephone);
@@ -48,14 +56,14 @@ class CompteModel extends Model
         return $compte;
     }
 
-    public function crediter(int $compteId, float $montant): void
+    public function crediter(int $compteId, float $montant)
     {
         $this->set('solde', 'solde + ' . (float) $montant, false)
              ->where('id', $compteId)
              ->update();
     }
 
-    public function debiter(int $compteId, float $montant): void
+    public function debiter(int $compteId, float $montant)
     {
         $this->set('solde', 'solde - ' . (float) $montant, false)
              ->where('id', $compteId)

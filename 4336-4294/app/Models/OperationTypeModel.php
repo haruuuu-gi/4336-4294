@@ -12,7 +12,7 @@ class OperationTypeModel extends Model
     protected $useTimestamps = false;
     protected $allowedFields = ['code', 'libelle', 'actif'];
 
-    public function findByCode(string $code): ?array
+    public function findByCode(string $code)
     {
         return $this->where('code', $code)->first();
     }

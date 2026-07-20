@@ -25,7 +25,14 @@
     </div>
     <div class="col-md-8">
         <table class="table table-admin table-striped bg-white shadow-sm">
-            <thead><tr><th>Code</th><th>Libellé</th><th>Statut</th><th>Actions</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Libellé</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
             <tbody>
             <?php foreach ($types as $t): ?>
                 <tr>

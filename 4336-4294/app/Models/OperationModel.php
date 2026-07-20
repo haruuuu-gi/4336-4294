@@ -15,7 +15,7 @@ class OperationModel extends Model
         'montant', 'frais', 'commission', 'solde_apres',
     ];
 
-    public function historiquePourCompte(int $compteId): array
+    public function historiquePourCompte(int $compteId)
     {
         return $this->select('operations.*, operation_types.libelle as operation_libelle, COALESCE(operations.telephone_dest, cl2.telephone) as telephone_dest')
                     ->join('operation_types', 'operation_types.id = operations.operation_type_id')
@@ -26,12 +26,12 @@ class OperationModel extends Model
                     ->findAll();
     }
 
-    public function situationGains(): array
+    public function situationGains()
     {
         return $this->db->query('SELECT * FROM v_gains_par_type')->getResultArray();
     }
 
-    public function situationGainsSplit(string $ownPrefix): array
+    public function situationGainsSplit(string $ownPrefix)
     {
         $sql = "SELECT
             ot.id AS operation_type_id,
@@ -50,7 +50,7 @@ class OperationModel extends Model
         return $query->getResultArray();
     }
 
-    public function montantParOperateur(): array
+    public function montantParOperateur()
     {
         $sql = "SELECT
             COALESCE(substr(COALESCE(o.telephone_dest, cl2.telephone), 1, 3), 'N/A') AS prefixe,
@@ -68,7 +68,7 @@ class OperationModel extends Model
         return $this->db->query($sql)->getResultArray();
     }
 
-    public function detailsTransferts(): array
+    public function detailsTransferts()
     {
         $sql = "SELECT
             o.id,
@@ -86,6 +86,7 @@ class OperationModel extends Model
         LEFT JOIN clients cl2 ON cl2.id = c2.client_id
         WHERE o.operation_type_id = (SELECT id FROM operation_types WHERE code = 'transfert' LIMIT 1)
           AND o.compte_id IS NOT NULL
+          AND NOT (o.compte_dest_id IS NOT NULL AND o.frais = 0 AND o.commission = 0)
         ORDER BY o.created_at DESC";
 
         return $this->db->query($sql)->getResultArray();

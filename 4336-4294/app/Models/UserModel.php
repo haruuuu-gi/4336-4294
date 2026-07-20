@@ -12,12 +12,12 @@ class UserModel extends Model
     protected $useTimestamps = false;
     protected $allowedFields = ['nom', 'login', 'password', 'role', 'actif'];
 
-    public function findByLogin(string $login): ?array
+    public function findByLogin(string $login)
     {
         return $this->where('login', $login)->where('actif', 1)->first();
     }
 
-    // public function verifierMotDePasse(string $login, string $password): ?array
+    // public function verifierMotDePasse(string $login, string $password): 
     // {
     //     $user = $this->findByLogin($login);
 

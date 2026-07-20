@@ -4,10 +4,11 @@ namespace App\Controllers\Client;
 
 use App\Controllers\BaseController;
 use App\Models\CompteModel;
-use App\Models\PrefixModel;
 
 class AuthController extends BaseController
 {
+    protected string $ownPrefix = '039';
+
     public function login()
     {
         return view('client/login');
@@ -21,14 +22,12 @@ class AuthController extends BaseController
             return redirect()->to('/client/login')->with('error', 'Numéro de téléphone invalide.');
         }
 
-        // v1: site utilisé par un seul opérateur Airtel (préfixe 033)
-        $ownPrefix = '033';
-        if (substr($telephone, 0, 3) !== $ownPrefix) {
-            return redirect()->to('/client/login')->with('error', 'Ce site est réservé aux numéros Airtel (033)');
+        if (substr($telephone, 0, 3) !== $this->ownPrefix) {
+            return redirect()->to('/client/login')->with('error', 'Ce site est réservé aux numéros de l\'opérateur 039.');
         }
 
         $compteModel = new CompteModel();
-        $compte      = $compteModel->trouverOuCreer($telephone);
+        $compte = $compteModel->trouverOuCreer($telephone);
 
         session()->set([
             'compte_id' => $compte['id'],

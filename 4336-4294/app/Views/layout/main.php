@@ -3,45 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Mobile Money' ?></title>
+    <title><?= $title ?? 'Golden Money' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url('css/style.css') ?>" rel="stylesheet">
 </head>
-<body class="bg-light">
-<?php if (session()->get('compte_id')): ?>
-<nav class="navbar navbar-expand-lg navbar-dark navbar-client mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="<?= site_url('client/dashboard') ?>">Mobile Money</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navClient">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navClient">
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link text-white" href="<?= site_url('client/dashboard') ?>">Solde</a>
-                <a class="nav-link text-white" href="<?= site_url('client/depot') ?>">Dépôt</a>
-                <a class="nav-link text-white" href="<?= site_url('client/retrait') ?>">Retrait</a>
-                <a class="nav-link text-white" href="<?= site_url('client/transfert') ?>">Transfert</a>
-                <a class="nav-link text-white" href="<?= site_url('client/historique') ?>">Historique</a>
-                <a class="nav-link text-white" href="<?= site_url('client/logout') ?>">Déconnexion (<?= esc(session()->get('telephone')) ?>)</a>
+<body class="bg-page">
+<header class="site-header py-3 mb-4">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <div>
+            <a class="brand" href="<?= site_url('client/dashboard') ?>">Golden Money</a>
+            <p class="brand-subtitle mb-0">Secure your money</p>
+        </div>
+        <?php if (session()->get('compte_id')): ?>
+            <div class="header-actions d-flex flex-wrap gap-2 align-items-center">
+                <span class="badge badge-primary">Client : <?= esc(session()->get('telephone')) ?></span>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/depot') ?>">Dépôt</a>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/transfert') ?>">Transfert</a>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/retrait') ?>">Retrait</a>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/historique') ?>">Historique</a>
+                <a class="btn btn-sm btn-light" href="<?= site_url('client/logout') ?>">Déconnexion</a>
             </div>
-        </div>
-        <div class="navbar-admin ms-auto">
-            <a href="../admin/login" class="btn btn-outline-light">Admin</a>
-        </div>
+        <?php endif; ?>
     </div>
-</nav>
-<?php endif; ?>
+</header>
 
-<div class="container pb-5">
+<main class="container pb-5">
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
+        <div class="alert alert-success shadow-sm"><?= esc(session()->getFlashdata('success')) ?></div>
     <?php endif; ?>
     <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+        <div class="alert alert-danger shadow-sm"><?= esc(session()->getFlashdata('error')) ?></div>
     <?php endif; ?>
 
     <?= $this->renderSection('content') ?>
-</div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -133,5 +133,5 @@ INSERT INTO baremes (operation_type_id, montant_min, montant_max, frais) VALUES
     (3, 500001,   1000000, 2500),
     (3, 1000001,  2000000, 3000);
 
-INSERT INTO clients (telephone) VALUES ('0331234567'), ('0337654321');
+INSERT INTO clients (telephone) VALUES ('0391234567'), ('0397654321');
 INSERT INTO comptes (client_id, solde) VALUES (1, 50000), (2, 10000);

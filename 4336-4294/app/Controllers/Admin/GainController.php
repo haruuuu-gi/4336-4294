@@ -10,7 +10,7 @@ class GainController extends BaseController
     public function index()
     {
         $operationModel = new OperationModel();
-        $ownPrefix = '033';
+        $ownPrefix = '039';
         $gains = $operationModel->situationGainsSplit($ownPrefix);
 
         $totalGeneral = array_sum(array_column($gains, 'total_frais'));

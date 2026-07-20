@@ -12,7 +12,7 @@ class ClientModel extends Model
     protected $useTimestamps = false;
     protected $allowedFields = ['telephone'];
 
-    public function parTelephone(string $telephone): ?array
+    public function parTelephone(string $telephone)
     {
         return $this->where('telephone', $telephone)->first();
     }

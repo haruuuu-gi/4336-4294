@@ -1,12 +1,13 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
+<div class="page-panel">
+    <div class="page-header">
         <h5 class="section-title">📥 Faire un dépôt</h5>
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <p class="text-muted">Solde actuel : <strong class="text-mm-primary"><?= number_format($compte['solde'], 0, ',', ' ') ?> Ar</strong></p>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p class="text-muted">Solde actuel : <strong class="fw-bold text-dark"><?= number_format($compte['solde'], 0, ',', ' ') ?> Ar</strong></p>
                 <form method="post" action="<?= site_url('client/depot') ?>">
                     <?= csrf_field() ?>
                     <div class="mb-3">

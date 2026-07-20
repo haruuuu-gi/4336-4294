@@ -10,13 +10,15 @@ class PrefixModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $useTimestamps = false;
-    // Allowed fields include commission percent
     protected $allowedFields = ['prefixe', 'actif', 'commission_percent'];
+    public const OWN_PREFIX = '039';
 
-    /**
-     * Vérifie si un numéro de téléphone correspond à un préfixe actif.
-     */
-    public function telephoneValide(string $telephone): bool
+    public function externes()
+    {
+        return $this->where('prefixe !=', self::OWN_PREFIX)->findAll();
+    }
+
+    public function telephoneValide(string $telephone)
     {
         $prefixe = substr($telephone, 0, 3);
 
@@ -25,18 +27,18 @@ class PrefixModel extends Model
                      ->countAllResults() > 0;
     }
 
-    public function actifs(): array
+    public function actifs()
     {
         return $this->where('actif', 1)->findAll();
     }
 
-    public function commissionPourPrefixe(string $prefixe): float
+    public function commissionPourPrefixe(string $prefixe)
     {
         $row = $this->where('prefixe', $prefixe)->first();
         if (! $row) {
             return 1.0;
         }
 
-        return isset($row['commission_percent']) ? (float) $row['commission_percent'] : 1.0;
+        return isset($row['commission_percent']) ? $row['commission_percent'] : 1.0;
     }
 }

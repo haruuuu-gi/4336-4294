@@ -11,9 +11,9 @@ use RuntimeException;
 
 class OperationService
 {
-    protected string $ownPrefix = '033';
+    protected string $ownPrefix = '039';
 
-    public function depot(int $compteId, float $montant): void
+    public function depot(int $compteId, float $montant)
     {
         if ($montant <= 0) {
             throw new RuntimeException('Le montant doit être positif.');
@@ -29,7 +29,6 @@ class OperationService
         }
 
         $compteModel->crediter($compteId, $montant);
-
         $compte = $compteModel->find($compteId);
 
         $operationModel->insert([
@@ -38,11 +37,12 @@ class OperationService
             'operation_type_id' => $type['id'],
             'montant' => $montant,
             'frais' => 0,
+            'commission' => 0,
             'solde_apres' => $compte['solde'],
         ]);
     }
 
-    public function retrait(int $compteId, float $montant): void
+    public function retrait(int $compteId, float $montant)
     {
         if ($montant <= 0) {
             throw new RuntimeException('Le montant doit être positif.');
@@ -59,8 +59,8 @@ class OperationService
         }
 
         $frais = $baremeModel->fraisPour((int) $type['id'], $montant);
-
         $compte = $compteModel->find($compteId);
+
         if (! $compte) {
             throw new RuntimeException('Compte introuvable.');
         }
@@ -71,7 +71,6 @@ class OperationService
         }
 
         $compteModel->debiter($compteId, $total);
-
         $compte = $compteModel->find($compteId);
 
         $operationModel->insert([
@@ -80,11 +79,12 @@ class OperationService
             'operation_type_id' => $type['id'],
             'montant' => $montant,
             'frais' => $frais,
+            'commission' => 0,
             'solde_apres' => $compte['solde'],
         ]);
     }
 
-    public function transfert(int $compteId, string $telephoneDest, float $montant, bool $inclureFraisDest = false): void
+    public function transfert(int $compteId, string $telephoneDest, float $montant, bool $inclureFraisDest = false)
     {
         if ($montant <= 0) {
             throw new RuntimeException('Le montant doit être positif.');
@@ -101,50 +101,50 @@ class OperationService
             throw new RuntimeException('Type d\'operation transfert introuvable.');
         }
 
-        if (! preg_match('/^\d{3,}$/', $telephoneDest)) {
+        if (! preg_match('/^\d{9,10}$/', $telephoneDest)) {
             throw new RuntimeException('Numéro destinataire invalide.');
         }
 
         $prefixDest = substr($telephoneDest, 0, 3);
+        $transferFee = $baremeModel->fraisPour((int) $type['id'], $montant);
+        $commission = 0.0;
 
-        if (! preg_match('/^03\d$/', $prefixDest)) {
-            throw new RuntimeException('Préfixe du destinataire invalide pour les opérateurs 03x.');
+        if ($prefixDest !== $this->ownPrefix && ! $prefixModel->where('prefixe', $prefixDest)->where('actif', 1)->first()) {
+            throw new RuntimeException('Opérateur destinataire non pris en charge.');
         }
 
-        $baseFrais = $baremeModel->fraisPour((int) $type['id'], $montant);
-
-        $commission = 0.0;
         if ($prefixDest !== $this->ownPrefix) {
             $commissionPercent = $prefixModel->commissionPourPrefixe($prefixDest);
             $commission = round($montant * ($commissionPercent / 100.0), 2);
         }
 
-        $totalFrais = $baseFrais + $commission;
-
-        $compte = $compteModel->find($compteId);
-        if (! $compte) {
+        $sender = $compteModel->findWithTelephone($compteId);
+        if (! $sender) {
             throw new RuntimeException('Compte émetteur introuvable.');
         }
 
-        $totalDebiter = $montant + $totalFrais;
-        if ($compte['solde'] < $totalDebiter) {
-            throw new RuntimeException('Solde insuffisant pour couvrir le montant et les frais.');
+        if ($telephoneDest === $sender['telephone']) {
+            throw new RuntimeException('Le destinataire doit être différent de l\'émetteur.');
         }
 
-        // If destination is another operator, do NOT create or credit a local account.
         if ($prefixDest !== $this->ownPrefix) {
-            // debit sender by montant + totalFrais (baseFrais + commission)
+            $totalFrais = $transferFee + $commission;
+            $totalDebiter = $montant + $totalFrais;
+
+            if ($sender['solde'] < $totalDebiter) {
+                throw new RuntimeException('Solde insuffisant pour couvrir le montant et les frais.');
+            }
+
             $compteModel->debiter($compteId, $totalDebiter);
             $compteAfter = $compteModel->find($compteId);
 
-            // Record operation with no local destination account; keep destination phone for reporting
             $operationModel->insert([
                 'compte_id' => $compteId,
                 'compte_dest_id' => null,
                 'telephone_dest' => $telephoneDest,
                 'operation_type_id' => $type['id'],
                 'montant' => $montant,
-                'frais' => $baseFrais,
+                'frais' => $transferFee,
                 'commission' => $commission,
                 'solde_apres' => $compteAfter['solde'],
             ]);
@@ -152,38 +152,43 @@ class OperationService
             return;
         }
 
-        // Destination is internal: find or create dest account and credit accordingly
-        $destCompte = $compteModel->trouverOuCreer($telephoneDest);
+        $retraitType = $typeModel->findByCode('retrait');
+        $withdrawalFee = $retraitType ? $baremeModel->fraisPour((int) $retraitType['id'], $montant) : 0.0;
 
+        $creditToDest = $montant;
+        $totalDebiter = $montant + $transferFee;
+
+        if ($inclureFraisDest) {
+            $creditToDest += $withdrawalFee;
+            $totalDebiter += $withdrawalFee;
+        }
+
+        if ($sender['solde'] < $totalDebiter) {
+            throw new RuntimeException('Solde insuffisant pour couvrir le montant et les frais.');
+        }
+
+        $destCompte = $compteModel->trouverOuCreer($telephoneDest);
         $compteModel->debiter($compteId, $totalDebiter);
         $compteAfter = $compteModel->find($compteId);
-
-        // If include fees option is set, add the baseFrais to the recipient's credited amount
-        $creditToDest = $montant;
-        if ($inclureFraisDest) {
-            $creditToDest += $baseFrais;
-        }
 
         $compteModel->crediter((int) $destCompte['id'], $creditToDest);
         $destAfter = $compteModel->find((int) $destCompte['id']);
 
-        // Sender operation (outgoing)
         $operationModel->insert([
             'compte_id' => $compteId,
             'compte_dest_id' => $destCompte['id'] ?? null,
             'telephone_dest' => $telephoneDest,
             'operation_type_id' => $type['id'],
-            'montant' => $montant,
-            'frais' => $baseFrais,
+            'montant' => $creditToDest,
+            'frais' => $transferFee,
             'commission' => 0,
             'solde_apres' => $compteAfter['solde'],
         ]);
 
-        // Recipient operation (incoming) - frais zero for recipient
         $operationModel->insert([
             'compte_id' => $destCompte['id'] ?? null,
             'compte_dest_id' => $compteId,
-            'telephone_dest' => $telephoneDest,
+            'telephone_dest' => $sender['telephone'],
             'operation_type_id' => $type['id'],
             'montant' => $creditToDest,
             'frais' => 0,

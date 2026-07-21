@@ -29,7 +29,15 @@
     </div>
     <div class="col-md-8">
         <table class="table table-admin table-striped bg-white shadow-sm">
-            <thead><tr><th>Nom</th><th>Login</th><th>Rôle</th><th>Statut</th><th>Actions</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Login</th>
+                    <th>Rôle</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
             <tbody>
             <?php foreach ($users as $u): ?>
                 <tr>

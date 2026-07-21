@@ -36,7 +36,11 @@ class OperationModel extends Model
         $sql = "SELECT
             ot.id AS operation_type_id,
             ot.libelle AS operation,
-            CASE WHEN substr(cl2.telephone, 1, 3) = ? THEN 'operateur' ELSE 'autre_operateur' END AS categorie,
+            CASE
+                WHEN ot.code != 'transfert' THEN ' - '
+                WHEN substr(cl2.telephone, 1, 3) = ? THEN 'operateur'
+                ELSE 'autre_operateur'
+            END AS categorie,
             COUNT(o.id) AS nb_operations,
             COALESCE(SUM(o.frais), 0) AS total_frais
         FROM operation_types ot

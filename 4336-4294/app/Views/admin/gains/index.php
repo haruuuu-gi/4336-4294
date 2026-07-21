@@ -7,6 +7,7 @@
     <thead>
         <tr>
             <th>Opération</th>
+            <th>Catégorie</th>
             <th>Nombre d'opérations</th>
             <th>Total des frais perçus</th>
         </tr>
@@ -15,6 +16,7 @@
     <?php foreach ($gains as $g): ?>
         <tr>
             <td><?= esc($g['operation']) ?></td>
+            <td><?= esc($g['categorie']) ?></td>
             <td><?= (int) $g['nb_operations'] ?></td>
             <td><?= number_format($g['total_frais'], 0, ',', ' ') ?> Ar</td>
         </tr>

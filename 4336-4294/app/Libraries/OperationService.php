@@ -13,6 +13,30 @@ class OperationService
 {
     protected string $ownPrefix = '039';
 
+    /**
+     * Récupère un type d'opération par son code ou lève une exception.
+     * Centralise ce lookup pour éviter de le dupliquer dans chaque méthode.
+     */
+    protected function typeOperation(string $code): array
+    {
+        $typeModel = new OperationTypeModel();
+        $type = $typeModel->findByCode($code);
+
+        if (! $type) {
+            throw new RuntimeException("Type d'operation {$code} introuvable.");
+        }
+
+        return $type;
+    }
+
+    protected function fraisRetrait(float $montant): float
+    {
+        $retraitType = $this->typeOperation('retrait');
+        $baremeModel = new BaremeModel();
+
+        return $baremeModel->fraisPour((int) $retraitType['id'], $montant);
+    }
+
     public function depot(int $compteId, float $montant)
     {
         if ($montant <= 0) {
@@ -21,12 +45,8 @@ class OperationService
 
         $compteModel = new CompteModel();
         $operationModel = new OperationModel();
-        $typeModel = new OperationTypeModel();
 
-        $type = $typeModel->findByCode('depot');
-        if (! $type) {
-            throw new RuntimeException('Type d\'operation dépôt introuvable.');
-        }
+        $type = $this->typeOperation('depot');
 
         $compteModel->crediter($compteId, $montant);
         $compte = $compteModel->find($compteId);
@@ -49,16 +69,10 @@ class OperationService
         }
 
         $compteModel = new CompteModel();
-        $baremeModel = new BaremeModel();
         $operationModel = new OperationModel();
-        $typeModel = new OperationTypeModel();
 
-        $type = $typeModel->findByCode('retrait');
-        if (! $type) {
-            throw new RuntimeException('Type d\'operation retrait introuvable.');
-        }
-
-        $frais = $baremeModel->fraisPour((int) $type['id'], $montant);
+        $type = $this->typeOperation('retrait');
+        $frais = $this->fraisRetrait($montant);
         $compte = $compteModel->find($compteId);
 
         if (! $compte) {
@@ -93,13 +107,9 @@ class OperationService
         $compteModel = new CompteModel();
         $baremeModel = new BaremeModel();
         $operationModel = new OperationModel();
-        $typeModel = new OperationTypeModel();
         $prefixModel = new PrefixModel();
 
-        $type = $typeModel->findByCode('transfert');
-        if (! $type) {
-            throw new RuntimeException('Type d\'operation transfert introuvable.');
-        }
+        $type = $this->typeOperation('transfert');
 
         if (! preg_match('/^\d{9,10}$/', $telephoneDest)) {
             throw new RuntimeException('Numéro destinataire invalide.');
@@ -152,8 +162,7 @@ class OperationService
             return;
         }
 
-        $retraitType = $typeModel->findByCode('retrait');
-        $withdrawalFee = $retraitType ? $baremeModel->fraisPour((int) $retraitType['id'], $montant) : 0.0;
+        $withdrawalFee = $inclureFraisDest ? $this->fraisRetrait($montant) : 0.0;
 
         $creditToDest = $montant;
         $totalDebiter = $montant + $transferFee;

@@ -14,7 +14,7 @@
         <div class="row align-items-center gx-4">
             <div class="col-md-7">
                 <h1 class="display-5 fw-bold text-white">Golden Money</h1>
-                <p class="hero-text fs-5 text-white opacity-85">Une interface mobile money claire et moderne pour gérer vos dépôts, retraits et transferts.</p>
+                <p class="hero-text fs-5 text-white opacity-85">Gérez vos dépôts, retraits et transferts.</p>
             </div>
             <div class="col-md-5">
                 <div class="card shadow-sm p-4">

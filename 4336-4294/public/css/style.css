@@ -143,13 +143,12 @@ main.container{ padding-top:10px; }
 .card.text-decoration-none{ color:var(--ink-text); }
 .card .card-body{ padding:4px 2px; }
 .card h2, .card h5, .card h6{ color:var(--ink-text); }
-.card .text-muted{ color:var(--muted) !important; }
+.card .text-muted{ text-align: center; color:var(--muted) !important; }
 .card .stat-icon{
-  display:inline-flex; width:52px; height:52px; align-items:center; justify-content:center;
-  border-radius:50%; background:var(--ink); color:var(--brass-bright);
-  font-size:22px; margin-bottom:14px; box-shadow:inset 0 0 0 2px var(--brass-deep);
+  display: flex; height:52px; align-items:center; justify-content:center;
+  font-size:50px; margin-bottom:14px;
 }
-.card h6{ font-family:var(--font-display); font-size:1.15rem; margin:6px 0 4px; }
+.card h6{ text-align:center; font-family: var(--font-display); font-size:1.15rem; margin:6px 0 4px; }
 
 /* signature : coin de registre replié, en haut à droite de chaque page-panel card */
 .page-panel .card::before{
@@ -174,8 +173,8 @@ main.container{ padding-top:10px; }
   background:var(--paper); border-radius:var(--radius-lg); border-left:4px solid var(--brass);
   box-shadow:var(--shadow-paper); padding:24px;
 }
-.stat-title{ font-family:var(--font-mono); font-size:.78rem; text-transform:uppercase; letter-spacing:1.1px; color:var(--muted); margin-bottom:8px; }
-.stat-number{ font-family:var(--font-mono); font-weight:600; font-size:1.9rem; color:var(--ink-text); font-variant-numeric:tabular-nums; }
+.stat-title{ text-align: center; font-family:var(--font-mono); font-size:.78rem; text-transform:uppercase; letter-spacing:1.1px; color:var(--muted); margin-bottom:8px; }
+.stat-number{ text-align: center; font-family:var(--font-mono); font-weight:600; font-size:1.9rem; color:var(--ink-text); font-variant-numeric:tabular-nums; }
 
 /* ---------- Buttons ---------- */
 .btn{
@@ -278,7 +277,7 @@ button[type=submit]{ margin-top:4px; }
 .table tbody tr:hover td.text-muted{ color:#fff !important; opacity:.85; }
 /* .table tbody tr:hover td:first-child, table tbody tr:hover td:first-child{ color:#fff !important; } */
 .table tfoot, table tfoot{ background:var(--paper-2); }
-.table tfoot td, table tfoot td{ padding:14px 16px; font-weight:700; text-align:center; border-top:2px solid var(--brass); background-color:var(--paper-2) !important; }
+.table tfoot td, table tfoot td{ color: #0D0F11; padding:14px 16px; font-weight:700; text-align:center; border-top:2px solid var(--brass); background-color:var(--paper-2) !important; }
 .table-admin td, .table-admin th{ font-size:.82rem; padding:11px 14px; }
 /* case "commission" (préfixes) : proportionnelle aux boutons/badges de la même ligne */
 .table td form.d-flex, table td form.d-flex{ justify-content:center; align-items:center; }

@@ -17,7 +17,7 @@
         <tr>
             <td><?= esc($g['operation']) ?></td>
             <td><?= esc($g['categorie']) ?></td>
-            <td><?= (int) $g['nb_operations'] ?></td>
+            <td><?= $g['nb_operations'] ?></td>
             <td><?= number_format($g['total_frais'], 0, ',', ' ') ?> Ar</td>
         </tr>
     <?php endforeach; ?>
@@ -33,7 +33,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h5 class="section-title admin mt-4">� Détail des transferts</h5>
+<h5 class="section-title admin mt-4">🔁 Détail des transferts</h5>
 
 <table class="table table-admin table-striped bg-white shadow-sm">
     <thead>

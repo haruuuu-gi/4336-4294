@@ -10,7 +10,7 @@
             <th>Date</th>
             <th>Opération</th>
             <th>Montant</th>
-            <th>Frais retrait</th>
+            <th>Frais</th>
             <th>Commission</th>
             <th>Destinataire</th>
             <th>Solde après</th>

@@ -99,7 +99,7 @@ class OperationService
         ]);
     }
 
-    public function transfert(int $compteId, string $telephoneDest, float $montant, bool $inclureFraisDest = false)
+    public function transfert(int $compteId, string $telephoneDest, float $montant, bool $inclureFraisDest = false , float $montantepargne)
     {
         if ($montant <= 0) {
             throw new RuntimeException('Le montant doit être positif.');
@@ -112,6 +112,8 @@ class OperationService
         $promotionModel = new PromotionModel();
 
         $type = $this->typeOperation('transfert');
+
+
 
         if (! preg_match('/^\d{9,10}$/', $telephoneDest)) {
             throw new RuntimeException('Numéro destinataire invalide.');
@@ -128,6 +130,8 @@ class OperationService
 
         $commission = 0.0;
 
+
+
         if ($prefixDest !== $this->ownPrefix && ! $prefixModel->where('prefixe', $prefixDest)->where('actif', 1)->first()) {
             throw new RuntimeException('Opérateur destinataire non pris en charge.');
         }
@@ -135,6 +139,11 @@ class OperationService
         if ($prefixDest !== $this->ownPrefix) {
             $commissionPercent = $prefixModel->commissionPourPrefixe($prefixDest);
             $commission = round($montant * ($commissionPercent / 100.0), 2);
+        }
+
+        if ($prefixDest === $this->ownPrefix){
+            
+
         }
 
         $sender = $compteModel->findWithTelephone($compteId);
@@ -166,6 +175,7 @@ class OperationService
                 'frais' => $transferFee,
                 'commission' => $commission,
                 'solde_apres' => $compteAfter['solde'],
+                
             ]);
 
             return;

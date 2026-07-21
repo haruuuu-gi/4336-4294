@@ -54,6 +54,7 @@ CREATE TABLE comptes (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id   INTEGER NOT NULL UNIQUE,
     solde       DECIMAL(15,2) NOT NULL DEFAULT 0,
+    epargne     DECIMAL(15,2) NOT NULL DEFAULT 0,
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
@@ -82,6 +83,7 @@ CREATE TABLE promotion (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     valeur DECIMAL(10,2) NOT NULL DEFAULT 0
 );
+
 
 DROP VIEW IF EXISTS v_gains_par_type;
 CREATE VIEW v_gains_par_type AS

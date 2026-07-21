@@ -21,6 +21,8 @@
                 <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/transfert') ?>">Transfert</a>
                 <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/retrait') ?>">Retrait</a>
                 <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/historique') ?>">Historique</a>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('client/epargne') ?>">Epargne</a>
+
                 <a class="btn btn-sm btn-light" href="<?= site_url('client/logout') ?>">Déconnexion</a>
             </div>
         <?php endif; ?>

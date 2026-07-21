@@ -24,6 +24,8 @@ $routes->group('client', ['filter' => 'clientAuth'], static function ($routes) {
     $routes->post('transfert', 'Client\OperationController::processTransfert');
 
     $routes->get('historique', 'Client\HistoriqueController::index');
+
+    $routes->get('epargne', 'Client\EpargneController::index');
 });
 
 

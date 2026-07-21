@@ -10,7 +10,7 @@ class CompteModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $useTimestamps = false;
-    protected $allowedFields = ['client_id', 'solde'];
+    protected $allowedFields = ['client_id', 'solde' , 'epargne'];
 
     public function parClientId(int $clientId)
     {
@@ -61,6 +61,13 @@ class CompteModel extends Model
         $this->set('solde', 'solde + ' . (float) $montant, false)
              ->where('id', $compteId)
              ->update();
+    }
+
+    public function epargner(int $compteId, float $montantepargne)
+    {
+        this->set('epargne','epargne +' .(float) $montantepargne, false)
+            ->where('id', $compteId)
+            ->update();
     }
 
     public function debiter(int $compteId, float $montant)

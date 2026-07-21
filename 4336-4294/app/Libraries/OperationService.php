@@ -7,6 +7,7 @@ use App\Models\CompteModel;
 use App\Models\OperationModel;
 use App\Models\OperationTypeModel;
 use App\Models\PrefixModel;
+use App\Models\PromotionModel;
 use RuntimeException;
 
 class OperationService
@@ -108,6 +109,7 @@ class OperationService
         $baremeModel = new BaremeModel();
         $operationModel = new OperationModel();
         $prefixModel = new PrefixModel();
+        $promotionModel = new PromotionModel();
 
         $type = $this->typeOperation('transfert');
 
@@ -115,8 +117,15 @@ class OperationService
             throw new RuntimeException('Numéro destinataire invalide.');
         }
 
+        $promotion = 0.0;
         $prefixDest = substr($telephoneDest, 0, 3);
         $transferFee = $baremeModel->fraisPour((int) $type['id'], $montant);
+
+        if ($prefixDest === $this->ownPrefix) {
+            $promotion = (float) $promotionModel->findAll();
+            $transferFee = round($transferFee * ($promotion / 100.0), 2);
+        }
+
         $commission = 0.0;
 
         if ($prefixDest !== $this->ownPrefix && ! $prefixModel->where('prefixe', $prefixDest)->where('actif', 1)->first()) {

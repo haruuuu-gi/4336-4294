@@ -77,6 +77,12 @@ CREATE TABLE operations (
 CREATE INDEX idx_operations_compte ON operations(compte_id);
 CREATE INDEX idx_operations_type ON operations(operation_type_id);
 
+DROP TABLE IF EXISTS promotion;
+CREATE TABLE promotion (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    valeur DECIMAL(10,2) NOT NULL DEFAULT 0
+);
+
 DROP VIEW IF EXISTS v_gains_par_type;
 CREATE VIEW v_gains_par_type AS
 SELECT
@@ -99,7 +105,7 @@ SELECT
 FROM comptes cp
 JOIN clients cl ON cl.id = cp.client_id;
 
-
+INSERT INTO promotion (valeur) VALUES (10.00);
 INSERT INTO prefixes (prefixe, actif, commission_percent) VALUES ('033', 1, 1.00), ('037', 1, 1.00), ('034', 1, 1.00), ('032', 1, 1.00), ('038', 1, 1.00);
 
 INSERT INTO users (nom, login, password, role, actif) VALUES

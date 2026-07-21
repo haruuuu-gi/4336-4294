@@ -124,8 +124,8 @@ class OperationService
         $transferFee = $baremeModel->fraisPour((int) $type['id'], $montant);
 
         if ($prefixDest === $this->ownPrefix) {
-            $promotion = (float) $promotionModel->findAll();
-            $transferFee = round($transferFee * ($promotion / 100.0), 2);
+            $promotion = $promotionModel->findAll();
+            $transferFee = round($transferFee * ($promotion['valeur'] / 100.0), 2);
         }
 
         $commission = 0.0;
